@@ -1,0 +1,74 @@
+<html>
+<head>
+	<title><%= title %></title>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" >
+  <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type ="text/javascript">
+        $(document).ready(function (){
+            $('#chatbox').hide();
+            $('#error').hide();
+            // Build Socket
+            var socket = io.connect(); 
+            socket.on('connect', function(){
+              console.log("client connected"); 
+            });
+
+            var new_user = function(){
+              var name = prompt("Please enter your name to chat");
+              socket.emit('new_user', {name:name})
+              
+            }
+            new_user();
+            $('#chatbox').show();
+             socket.on("existing_user", function(data){
+                $("#error").html(data.error)
+                $('#error').show()
+                new_user();
+              })
+
+            socket.on('someone_joined', function(data){
+              console.log(data);
+              $('#other_users').append('<p>' +data.name+ ' Joined chat ' + '</p>')
+            });
+
+            socket.on('all_prev', function(prev){ // listens to previous meassages
+              for (var i = 0; i < prev.length; i++) {
+                $('#prev').append('<p id="prev_one">'+ prev[i].name + ': '+ prev[i].message + '</p>');
+              }
+            }); 
+
+            $('#add_message').click(function (){
+                var message = $('#message').val()
+                console.log(message)
+                socket.emit('new_message',{message:message});
+            });
+
+            socket.on('display_current_message', function(data){
+              $('#prev').append('<p id="current_one">' +data.name+ ' : ' +data.message+ '</h2>')
+            })
+
+            socket.on('disconnect_user', function(data){
+                $("#error1").append('<p>' +data+ ' disconnected chat ' + '</p>')
+                $('#error1').show()
+            })
+        })
+  </script>
+  </head>
+  <body>
+    <p id="other_users">
+    </p>
+      <div id='chatbox'>
+        <p id = 'error'></p>
+        <p id = 'error1'></p>
+        <h3>Conversation History</h3>
+        <div id='prev'>
+        </div>
+        <div id='message_block'>
+          Enter Message:<input type="text" id="message" value=''>
+          <button id='add_message'>Send</button>
+        </div>
+    </div>
+</body>
+</html>

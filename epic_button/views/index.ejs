@@ -1,0 +1,36 @@
+<html>
+<head>
+	<title><%= title %></title>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <script type ="text/javascript">
+        $(document).ready(function (){
+            var socket = io.connect(); // trigerring the event to server
+            $('#epic_button').click(function (){
+                socket.emit('button_clicked',{reason: "Button clicked by client "});
+                return false;
+            });
+            $('#reset_button').click(function (){
+                socket.emit('reset_button_clicked',{reason: "Reset Button clicked by client "});
+            });
+            // Listens to push server_button_response event from the server
+            socket.on('server_button_response', function (data){
+              $('#message').html('The button has been pushed '  + JSON.stringify(data.res)+ ' times(s)')
+                console.log('The server says: ' + data.res);
+              });
+            // Listens to push server_reset_response event from the server
+            socket.on('server_reset_response', function (data){
+              $('#message').html('The Reset button has been pushed and made count to ' + JSON.stringify(data.res))
+                console.log('The server says: ' + data.res);
+              });
+        })
+      </script>
+    <div id='message'></div><br>
+    <p>Push the button to update the count!</p>
+    <button id='epic_button'>Push the Epic Button</button><br>
+    <button id='reset_button'>Reset Count</button>
+</body>
+</html>

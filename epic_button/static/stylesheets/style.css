@@ -1,0 +1,42 @@
+*{
+margin: 0px;
+padding: 0px;
+font-family: arial;
+font-size: 14px;
+}
+body{
+	border: 1px solid black;
+	height: 300px;
+	width: 500px;
+	margin: 56px 95px 57px 200px;
+	padding-left: 20px;
+	padding-top: 20px;
+}
+form{
+padding: 20px;
+}
+p{
+	padding-top: 50px;
+	padding-left: 140px;
+}
+#epic_button{
+margin-top: 5px;
+margin-left: 170px;
+height: 25px;
+border-radius: 2px;
+background-color: blue;
+color: white;
+}
+#reset_button{
+margin-top: 50px;
+margin-left: 280px;
+height: 20px;
+border-radius: 1px;
+background-color: red;
+color: white;
+}
+#message{
+color: red;
+padding-left: 60px;
+}
+

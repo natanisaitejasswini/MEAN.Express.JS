@@ -1,0 +1,55 @@
+<html>
+<head>
+	<title><%= title %></title>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <script type ="text/javascript">
+        $(document).ready(function (){
+            var socket = io.connect(); // trigerring the event to server
+            $('#survey_form').submit(function (){
+                socket.emit('posting_form',{
+                  name: $('#name').val(), 
+                  location: $('#location').val(), 
+                  language: $('#language').val(), 
+                  comments: $('#comments').val()
+                })// THis emits information to server and then we can listen this in server
+                return false;
+            })
+            socket.on("updated_message", function(data){
+              $('#message').html('You emitted the following information to the server:' + JSON.stringify(data.res))
+            })
+            socket.on("random_number", function(data){
+              $('#random_number').html('You lucky number emitted by server is:' + JSON.stringify(data.res))
+            })
+        })
+      </script>
+    <div id='message'></div><br>
+    <div id='random_number'></div><br><hr>
+    <h2>Fill out the Survey Form</h2>
+    <!--MAKE a form that user can fill out and server can render from your views section-->
+    <form action='' id='survey_form'> 
+	    Your Name: <input type='text' name='name' id='name'><br><br>
+	    Location:
+	    <select name="location" id='location'>
+	          	<option value="San Jose">San Jose</option>
+	          	<option value="Seattle">Seattle</option>
+	          	<option value="DC">DC</option>
+	          	<option value="Texas">Texas</option>
+          </select><br><br>
+          Favourite Language:
+        <select name="language" id='language'>
+          	<option value="Python">Python</option>
+          	<option value="C">C</option>
+          	<option value="Mean">Mean</option>
+          	<option value="Javascript">Javascript</option>
+        </select><br><br>
+        Comment (Optional):
+          <textarea name="comments" id='comments'></textarea><br><br>
+          <!-- User fills and submits -->
+          <input type="submit" value="submit">
+	</form>
+</body>
+</html>

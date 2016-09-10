@@ -1,0 +1,29 @@
+<html>
+<head>
+	<title><%= title %></title>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+</head>
+<body>
+    <h2>Fill out the Survey Form</h2>
+    <form action='/result' method='post'>
+	    Your Name: <input type='text' name='name'><br><br>
+	    Location:
+	    <select name="location">
+	          	<option value="San Jose">San Jose</option>
+	          	<option value="Seattle">Seattle</option>
+	          	<option value="DC">DC</option>
+	          	<option value="Texas">Texas</option>
+          </select><br><br>
+          Favourite Language:
+        <select name="language">
+          	<option value="Python">Python</option>
+          	<option value="C">C</option>
+          	<option value="Mean">Mean</option>
+          	<option value="Javascript">Javascript</option>
+        </select><br><br>
+        Comment (Optional):
+          <textarea name="comments"></textarea><br><br>
+          <input type="submit" value="submit">
+	</form>
+</body>
+</html>
